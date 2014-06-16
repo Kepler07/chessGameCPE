@@ -14,12 +14,14 @@ public class Reine extends Piece {
   
   public boolean testDeplacement( Point p )
   {
-      if (this.point.getX() - p.getX() == 0 && this.point.getY() - p.getY() == 0)
-          return false;
-      if (this.point.getX() == p.getX() || this.point.getY() == p.getY() || Math.abs(this.point.getX() - p.getX()) == Math.abs(this.point.getY() - p.getY()))
-          return true;
-      else
-          return false;
+      boolean estDeplacable = true;
+      
+      if (this.point.x - p.x == 0 && this.point.y - p.y == 0)
+          estDeplacable = false;
+      if (this.point.x != p.x && this.point.y != p.y && Math.abs(this.point.x - p.x) != Math.abs(this.point.y - p.y))
+          estDeplacable = false;
+      
+      return estDeplacable;
   }
 
 

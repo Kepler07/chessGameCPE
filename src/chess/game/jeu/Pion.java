@@ -2,41 +2,52 @@ package chess.game.jeu;
 
 import java.awt.Point;
 
-
 public class Pion extends Piece {
-    
+
     private boolean premierDeplacement = true;
 
-  public Pion (Point p, Couleur c) { 
-  
-      super(p,c);
-      this.type = Piece_type.pion;
-      
-  }
+    public Pion(Point p, Couleur c) {
 
-  public boolean testDeplacement( Point p )
-  {
-      if (this.point.getX() != p.getX())
-          return false;
-      
-      if (this.point.getX() - p.getX() == 0 && this.point.getY() - p.getY() == 0)
-          return false;
-      
-      if(this.premierDeplacement){
-                    
-          if(Math.abs((this.point.getY() - p.getY())) <= 2)
-              return true;
-          else
-              return false;
-      }
-      else {
-          if(Math.abs((this.point.getY() - p.getY())) == 1 )
-              return true;
-          else
-              return false;
-      }
-      
-  }
+        super(p, c);
+        this.type = Piece_type.pion;
 
+    }
 
+    public boolean testDeplacement(Point p) {
+        boolean estDeplacable = true;
+
+        if (this.point.x != p.x) {
+            estDeplacable = false;
+        }
+
+        if (this.couleur == Couleur.blanc) {
+            if (this.point.y > p.y)
+                  {
+                estDeplacable = false;
+            }
+        } else {
+            if (this.point.y < p.y)
+                  {
+                estDeplacable = false;
+            }
+        }
+
+        if (this.point.x - p.x == 0 && this.point.y - p.y == 0) {
+            estDeplacable = false;
+        }
+
+        if (this.premierDeplacement) {
+
+            if (Math.abs((this.point.y - p.y)) > 2) {
+                estDeplacable = false;
+            }
+        } else {
+            if (Math.abs((this.point.y - p.y)) != 1) {
+                estDeplacable = false;
+            }
+        }
+
+        return estDeplacable;
+
+    }
 }

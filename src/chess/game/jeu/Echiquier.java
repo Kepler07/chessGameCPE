@@ -1,64 +1,62 @@
 package chess.game.jeu;
 
+import java.awt.Point;
 
 
-/**
- * Class Echiquier
- */
 public class Echiquier {
 
-  //
-  // Fields
-  //
 
-  private Jeu j;
-  private Joueur joueurCourant;
-  private Case tabCases;
+    private Jeu j1;
+    private Jeu j2;
+    private Jeu jeuCourant;
+    private Piece[][] tabPieces;
 
-  public Echiquier () { };
+    public Echiquier() {
+        this.j1 = new Jeu(Couleur.blanc);
+        this.j2 = new Jeu(Couleur.noir);
+        
+        this.tabPieces = new Piece[8][8];
 
-  /*private void setJ ( Jeu newVar ) {
-    j = newVar;
-  }
+        this.jeuCourant = this.j1;
 
-  private Jeu getJ ( ) {
-    return j;
-  }
+        this.initTabPieces();
+    }
 
-  private void setJoueurCourant ( Joueur newVar ) {
-    joueurCourant = newVar;
-  }
+  
 
-  private Joueur getJoueurCourant ( ) {
-    return joueurCourant;
-  }
+  public Jeu getJoueurCourant() {
+        return this.jeuCourant;
+    }
 
-  private void setTabCases ( Case newVar ) {
-    tabCases = newVar;
-  }
+    public Piece[][] getTabPieces() {
+        return this.tabPieces;
+    }
 
-  private Case getTabCases ( ) {
-    return tabCases;
-  }
+    public void initTabPieces() {
+        
+        for( Piece p : this.j1.getTabPiece() )
+        {
+            this.tabPieces[p.point.x][p.point.y] = p;
+        }
+        
+        for( Piece p : this.j2.getTabPiece() )
+        {
+            this.tabPieces[p.point.x][p.point.y] = p;
+        }
+    }
 
-  public void Echiquier(  )
-  {
-  }
+    public void deplacerPiece(Piece p, Point point) {
+    }
 
-  public void initCases(  )
-  {
-  }
-
-  public Piece getPieceCase( Case c )
-  {
-  }
-
-  public void deplacerPiece( Piece p, Case c )
-  {
-  }
-
-  public void changerJoueur(  )
-  {
-  }
-*/
+    public Piece getPieceCase(Point p){
+        return this.tabPieces[p.x][p.y];
+    }
+    
+    public void changerJoueur() {
+        if (this.jeuCourant == j1) {
+            this.jeuCourant = j2;
+        } else {
+            this.jeuCourant = j1;
+        }
+    }
 }
