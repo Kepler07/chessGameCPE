@@ -16,8 +16,6 @@ public class Fou extends Piece {
   {
       boolean estDeplacable = true;
       
-      if (this.point.x - p.x == 0 && this.point.y - p.y == 0)
-          estDeplacable = false;
       if(Math.abs(this.point.x - p.x) != Math.abs(this.point.y - p.y))
           estDeplacable = false;
       

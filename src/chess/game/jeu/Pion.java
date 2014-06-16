@@ -1,6 +1,8 @@
 package chess.game.jeu;
 
 import java.awt.Point;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Pion extends Piece {
 
@@ -32,10 +34,6 @@ public class Pion extends Piece {
             }
         }
 
-        if (this.point.x - p.x == 0 && this.point.y - p.y == 0) {
-            estDeplacable = false;
-        }
-
         if (this.premierDeplacement) {
 
             if (Math.abs((this.point.y - p.y)) > 2) {
@@ -50,4 +48,5 @@ public class Pion extends Piece {
         return estDeplacable;
 
     }
+    
 }

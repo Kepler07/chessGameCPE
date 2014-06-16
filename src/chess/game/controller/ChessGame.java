@@ -29,6 +29,7 @@ public class ChessGame {
         System.out.println(j1.getPieceCase(new Point(0,0)).testDeplacement(new Point(0,2)));
         System.out.println(j1.getPieceCase(new Point(0,0)).testDeplacement(new Point(0,6)));
         System.out.println(j1.getPieceCase(new Point(0,0)).testDeplacement(new Point(1,0)));
+        System.out.println(j1.getPieceCase(new Point(0,0)).testDeplacement(new Point(1,1)));
         
         System.out.println("Test Fou");
         System.out.println(j1.getPieceCase(new Point(2,0)).testDeplacement(new Point(4,2)));

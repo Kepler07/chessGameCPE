@@ -17,11 +17,7 @@ public class Tour extends Piece {
     public boolean testDeplacement(Point p) {
         boolean estDeplacable = true;
 
-        if (this.point.x - p.x == 0 && this.point.y - p.y == 0) {
-            estDeplacable = false;
-        }
-
-        if (this.point.y == p.y) {
+        if ((this.point.y == p.y || this.point.x != p.x) && (this.point.x == p.x || this.point.y != p.y)) {
             estDeplacable = false;
         }
 

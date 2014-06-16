@@ -14,10 +14,6 @@ public class Cavalier extends Piece {
     public boolean testDeplacement(Point p) {
         boolean estDeplacable = true;
 
-        if (this.point.x - p.x == 0 && this.point.y - p.y == 0) {
-            estDeplacable = false;
-        }
-
         if (Math.abs(this.point.x - p.x) == 1) {
             if (Math.abs(this.point.y - p.y) != 2) {
                 estDeplacable = false;
