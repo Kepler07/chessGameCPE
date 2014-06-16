@@ -14,6 +14,8 @@ public class Reine extends Piece {
   
   public boolean testDeplacement( Point p )
   {
+      if (this.point.getX() - p.getX() == 0 && this.point.getY() - p.getY() == 0)
+          return false;
       if (this.point.getX() == p.getX() || this.point.getY() == p.getY() || Math.abs(this.point.getX() - p.getX()) == Math.abs(this.point.getY() - p.getY()))
           return true;
       else

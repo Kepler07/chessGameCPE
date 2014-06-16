@@ -51,6 +51,10 @@ abstract public class Piece {
       return true;
   }
 
+  public String toString() {
+      
+      return "Position = " + this.point.toString() + ", type = " + this.type.toString() + ", couleur = " + this.couleur.toString() + ", vivant = " + this.vivant + "\n";
+  }
 
   abstract public boolean testDeplacement( Point p );
 

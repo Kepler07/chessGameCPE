@@ -18,7 +18,9 @@ public class Tour extends Piece {
   
   public boolean testDeplacement( Point p )
   {
-      if (this.point.getY() != p.getY())
+      if (this.point.getX() - p.getX() == 0 && this.point.getY() - p.getY() == 0)
+          return false;
+      if (this.point.getX() != p.getX())
           return false;
       else
           return true;

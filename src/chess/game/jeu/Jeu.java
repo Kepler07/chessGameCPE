@@ -14,6 +14,7 @@ public class Jeu {
       
       tabPiece = new ArrayList<Piece>();
       couleurJeu = c;
+      this.initJeu();
       
   };
 
@@ -29,34 +30,34 @@ public class Jeu {
   {
       if (couleurJeu == Couleur.noir) {
           
-          this.tabPiece.add(new Tour(new Point(0,0), this.couleurJeu));
           this.tabPiece.add(new Tour(new Point(0,7), this.couleurJeu));
-          this.tabPiece.add(new Cavalier(new Point(0,1), this.couleurJeu));
-          this.tabPiece.add(new Cavalier(new Point(0,6), this.couleurJeu));
-          this.tabPiece.add(new Fou(new Point(0,2), this.couleurJeu));
-          this.tabPiece.add(new Fou(new Point(0,5), this.couleurJeu));
-          this.tabPiece.add(new Reine(new Point(0,4), this.couleurJeu));
-          this.tabPiece.add(new Roi(new Point(0,5), this.couleurJeu));
+          this.tabPiece.add(new Tour(new Point(7,7), this.couleurJeu));
+          this.tabPiece.add(new Cavalier(new Point(1,7), this.couleurJeu));
+          this.tabPiece.add(new Cavalier(new Point(6,7), this.couleurJeu));
+          this.tabPiece.add(new Fou(new Point(2,7), this.couleurJeu));
+          this.tabPiece.add(new Fou(new Point(5,7), this.couleurJeu));
+          this.tabPiece.add(new Reine(new Point(3,7), this.couleurJeu));
+          this.tabPiece.add(new Roi(new Point(4,7), this.couleurJeu));
           
           for (int i=0; i<8; i++) {
-              this.tabPiece.add(new Pion(new Point(1,i), this.couleurJeu));
+              this.tabPiece.add(new Pion(new Point(i,6), this.couleurJeu));
           }
          
       }
       
       else {
           
+          this.tabPiece.add(new Tour(new Point(0,0), this.couleurJeu));
           this.tabPiece.add(new Tour(new Point(7,0), this.couleurJeu));
-          this.tabPiece.add(new Tour(new Point(7,7), this.couleurJeu));
-          this.tabPiece.add(new Cavalier(new Point(7,1), this.couleurJeu));
-          this.tabPiece.add(new Cavalier(new Point(7,6), this.couleurJeu));
-          this.tabPiece.add(new Fou(new Point(7,2), this.couleurJeu));
-          this.tabPiece.add(new Fou(new Point(7,5), this.couleurJeu));
-          this.tabPiece.add(new Reine(new Point(7,4), this.couleurJeu));
-          this.tabPiece.add(new Roi(new Point(7,5), this.couleurJeu));
+          this.tabPiece.add(new Cavalier(new Point(1,0), this.couleurJeu));
+          this.tabPiece.add(new Cavalier(new Point(6,0), this.couleurJeu));
+          this.tabPiece.add(new Fou(new Point(2,0), this.couleurJeu));
+          this.tabPiece.add(new Fou(new Point(5,0), this.couleurJeu));
+          this.tabPiece.add(new Reine(new Point(3,0), this.couleurJeu));
+          this.tabPiece.add(new Roi(new Point(4,0), this.couleurJeu));
           
           for (int i=0; i<8; i++) {
-              this.tabPiece.add(new Pion(new Point(6,i), this.couleurJeu));
+              this.tabPiece.add(new Pion(new Point(i,1), this.couleurJeu));
           }
           
           
@@ -93,7 +94,7 @@ public class Jeu {
   {
       for(Piece p : this.tabPiece)
       {
-          if (p.getPoint() == point)
+          if (p.getPoint().equals(point))
               return p;
       }
       return null;
@@ -104,10 +105,17 @@ public class Jeu {
   {
       for(Piece p : this.tabPiece)
       {
-          if (p.getPoint() == point)
+          if (p.getPoint().equals(point))
               p.setVivant(false);
       }
       
+  }
+  
+    @Override
+  public String toString() {
+      
+        return tabPiece.toString();
+                
   }
 
 
