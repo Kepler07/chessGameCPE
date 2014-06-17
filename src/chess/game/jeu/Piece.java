@@ -22,6 +22,10 @@ abstract public class Piece {
       this.vivant = true;
   
   };
+  
+  public void setPoint(Point p) {
+      this.point = p;
+  }
  
   
   public Point getPoint ( ) {

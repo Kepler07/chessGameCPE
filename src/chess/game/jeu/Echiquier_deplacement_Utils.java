@@ -4,12 +4,7 @@ import java.awt.Point;
 
 public class Echiquier_deplacement_Utils {
 
-    public Echiquier_deplacement_Utils() {
-    }
-
-    ;
-  
-  public boolean estAutorise(Piece p, Echiquier e, Point point) {
+    public static boolean estAutorise(Piece p, Echiquier e, Point point) {
         boolean estDeplacable = true;
 
         //test validité et appartenance au bon joueur
@@ -34,11 +29,14 @@ public class Echiquier_deplacement_Utils {
 
         //test pièce déjà présente sur la case
         if (e.getPieceCase(point) != null) {
+            if (p.getType() == Piece_type.pion && p.point.x - point.x == 0) {
+                estDeplacable = false;
+            }
             if (e.getPieceCase(point).getCouleur() == p.getCouleur()) {
                 estDeplacable = false;
             }
         }
-        
+
         //test de collision (sauf pour cavalier)
         if (p.getType() != Piece_type.cavalier) {
             int dx, dy;
@@ -60,7 +58,7 @@ public class Echiquier_deplacement_Utils {
             }
 
             while ((dx != 0 || dy != 0) && estDeplacable) {
-                
+
                 if (e.getPieceCase(new Point(p.getPoint().x - dx, p.getPoint().y - dy)) != null) {
                     estDeplacable = false;
                 }

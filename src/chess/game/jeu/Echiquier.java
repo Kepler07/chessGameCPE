@@ -46,6 +46,15 @@ public class Echiquier {
     }
 
     public void deplacerPiece(Piece p, Point point) {
+        
+        if (Echiquier_deplacement_Utils.estAutorise(p, this, point))
+        {
+            if(this.getPieceCase(point) != null){
+                this.jeuCourant.mangerPieceCase(point);
+            }
+            p.setPoint(point);
+        }
+        
     }
 
     public Piece getPieceCase(Point p){
