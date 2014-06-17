@@ -57,7 +57,7 @@ public class Echiquier_deplacement_Utils {
                 dy++;
             }
 
-            while ((dx != 0 || dy != 0) && estDeplacable) {
+            while ((dx != 0 && dy != 0) && estDeplacable) {
 
                 if (e.getPieceCase(new Point(p.getPoint().x - dx, p.getPoint().y - dy)) != null) {
                     estDeplacable = false;

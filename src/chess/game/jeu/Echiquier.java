@@ -1,5 +1,6 @@
 package chess.game.jeu;
 
+import chess.game.controller.VuePiece;
 import java.awt.Point;
 
 
@@ -50,7 +51,10 @@ public class Echiquier {
         if (Echiquier_deplacement_Utils.estAutorise(p, this, point))
         {
             if(this.getPieceCase(point) != null){
-                this.jeuCourant.mangerPieceCase(point);
+                if (this.jeuCourant == this.j1)
+                    this.j2.mangerPieceCase(point);
+                else
+                    this.j1.mangerPieceCase(point);    
             }
             p.setPoint(point);
         }
@@ -67,5 +71,20 @@ public class Echiquier {
         } else {
             this.jeuCourant = j1;
         }
+    }
+    
+    public VuePiece[][] getVue() {
+        
+       VuePiece[][] tabVues = new VuePiece[8][8]; 
+       for (int i = 0; i < 8 ; i++)
+       {
+           for (int j = 0; j < 8 ; j++)
+           {
+               if (this.tabPieces[i][j] != null)
+               tabVues[i][j] = new VuePiece(this.tabPieces[i][j].point, this.tabPieces[i][j].type, this.tabPieces[i][j].couleur );
+           }
+       }
+               
+       return tabVues;
     }
 }
