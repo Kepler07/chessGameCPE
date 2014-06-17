@@ -8,27 +8,27 @@ public class Echiquier_deplacement_Utils {
         boolean estDeplacable = true;
 
         //test validité et appartenance au bon joueur
-        if (!p.estVivant() || e.getJoueurCourant().getPieceCase(p.getPoint()) != p) {
+        if (estDeplacable && (!p.estVivant() || e.getJoueurCourant().getPieceCase(p.getPoint()) != p)) {
             estDeplacable = false;
         }
 
         //test coordonnées valides
-        if (point.x < 0 && point.x >= 8 || point.y < 0 || point.y >= 8) {
+        if (estDeplacable && (point.x < 0 && point.x >= 8 || point.y < 0 || point.y >= 8)) {
             estDeplacable = false;
         }
 
         //test déplacement non-nul
-        if (p.point.x - point.x == 0 && p.point.y - point.y == 0) {
+        if (estDeplacable && (p.point.x - point.x == 0 && p.point.y - point.y == 0)) {
             estDeplacable = false;
         }
 
         //test déplacement propre à la pièce
-        if (!p.testDeplacement(point)) {
+        if (estDeplacable && !p.testDeplacement(point)) {
             estDeplacable = false;
         }
-
+        
         //test pièce déjà présente sur la case
-        if (e.getPieceCase(point) != null) {
+        if (estDeplacable && e.getPieceCase(point) != null) {
             if (p.getType() == Piece_type.pion && p.point.x - point.x == 0) {
                 estDeplacable = false;
             }
@@ -36,9 +36,13 @@ public class Echiquier_deplacement_Utils {
                 estDeplacable = false;
             }
         }
+        else if (estDeplacable && e.getPieceCase(point) == null){
+            if (p.getType() == Piece_type.pion && Math.abs(p.getPoint().x - point.x) != 0)
+                estDeplacable = false;
+        }
 
         //test de collision (sauf pour cavalier)
-        if (p.getType() != Piece_type.cavalier) {
+        if (estDeplacable && p.getType() != Piece_type.cavalier) {
             int dx, dy;
             dx = point.x - p.getPoint().x;
             dy = point.y - p.getPoint().y;
@@ -57,9 +61,9 @@ public class Echiquier_deplacement_Utils {
                 dy++;
             }
 
-            while ((dx != 0 && dy != 0) && estDeplacable) {
+            while ((dx != 0 || dy != 0) && estDeplacable) {
 
-                if (e.getPieceCase(new Point(p.getPoint().x - dx, p.getPoint().y - dy)) != null) {
+                if (e.getPieceCase(new Point(p.getPoint().x + dx, p.getPoint().y + dy)) != null) {
                     estDeplacable = false;
                 }
 

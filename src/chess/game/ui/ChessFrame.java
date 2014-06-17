@@ -1,17 +1,23 @@
 package chess.game.ui;
 
-import chess.game.controller.EventManager;
+import chess.game.controller.ChessController;
 import chess.game.controller.VuePiece;
 import chess.game.jeu.Couleur;
-import chess.game.jeu.Piece;
-import chess.game.jeu.Piece_type;
-import java.awt.*;
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Component;
+import java.awt.Dimension;
+import java.awt.Graphics;
+import java.awt.GridLayout;
+import java.awt.Insets;
+import java.awt.Point;
 import java.awt.event.*;
-import java.io.File;
 import java.util.*;
 import javax.swing.*;
+import javax.swing.border.BevelBorder;
+import javax.swing.border.Border;
 
-public class ChessFrame extends JFrame {
+public class ChessFrame extends JFrame implements MouseMotionListener {
 
     private JLayeredPane layeredPane;
     private JPanel chessBoard;
@@ -21,8 +27,8 @@ public class ChessFrame extends JFrame {
     private int sizex = 800;
     private int sizey = 800;
 
-    public ChessFrame(EventManager e) {
-        
+    public ChessFrame(ChessController c) {
+
         super();
         Dimension boardSize = new Dimension(sizex, sizey);
 
@@ -30,8 +36,8 @@ public class ChessFrame extends JFrame {
         layeredPane = new JLayeredPane();
         getContentPane().add(layeredPane);
         layeredPane.setPreferredSize(boardSize);
-        layeredPane.addMouseListener(e);
-        layeredPane.addMouseMotionListener(e);
+        layeredPane.addMouseListener(c);
+        layeredPane.addMouseMotionListener(this);
 
         //Add a chess board to the Layered Pane 
 
@@ -43,6 +49,7 @@ public class ChessFrame extends JFrame {
 
         for (int i = 0; i < 64; i++) {
             JPanel square = new JPanel(new BorderLayout());
+            square.setBorder(new javax.swing.border.BevelBorder(BevelBorder.RAISED));
             chessBoard.add(square);
 
             int row = (i / 8) % 2;
@@ -55,53 +62,12 @@ public class ChessFrame extends JFrame {
 
     }
 
-    public void mousePressed(MouseEvent e) {
-        chessPiece = null;
-        Component c = chessBoard.findComponentAt(e.getX(), e.getY());
-
-        if (c instanceof JPanel) {
-            return;
-        }
-
-        Point parentLocation = c.getParent().getLocation();
-        xAdjustment = parentLocation.x - e.getX();
-        yAdjustment = parentLocation.y - e.getY();
-        chessPiece = (JLabel) c;
-        chessPiece.setLocation(e.getX() + xAdjustment, e.getY() + yAdjustment);
-        chessPiece.setSize(chessPiece.getWidth(), chessPiece.getHeight());
-        layeredPane.add(chessPiece, JLayeredPane.DRAG_LAYER);
-    }
-
     //Move the chess piece around
     public void mouseDragged(MouseEvent me) {
         if (chessPiece == null) {
             return;
         }
         chessPiece.setLocation(me.getX() + xAdjustment, me.getY() + yAdjustment);
-    }
-
-    //Drop the chess piece back onto the chess board
-    public void mouseReleased(MouseEvent e) {
-        if (chessPiece == null) {
-            return;
-        }
-
-        chessPiece.setVisible(false);
-        Component c = chessBoard.findComponentAt(e.getX(), e.getY());
-
-        if (c instanceof JLabel) {
-            Container parent = c.getParent();
-            parent.remove(0);
-            parent.add(chessPiece);
-        } else {
-            Container parent = (Container) c;
-            parent.add(chessPiece);
-        }
-
-        chessPiece.setVisible(true);
-    }
-
-    public void mouseClicked(MouseEvent e) {
     }
 
     public void mouseMoved(MouseEvent e) {
@@ -120,6 +86,7 @@ public class ChessFrame extends JFrame {
             for (int j = 0; j < 8; j++) {
 
                 if (tabPieces[i][j] != null) {
+
                     if (tabPieces[i][j].couleur == Couleur.noir) {
 
                         switch (tabPieces[i][j].type) {
@@ -143,8 +110,7 @@ public class ChessFrame extends JFrame {
                                 break;
                         }
 
-                    }
-                    else {
+                    } else {
 
                         switch (tabPieces[i][j].type) {
                             case cavalier:
@@ -167,16 +133,89 @@ public class ChessFrame extends JFrame {
                                 break;
                         }
 
-                    }           
+                    }
                     JLabel piece = new JLabel(image);
-                    JPanel panel = (JPanel) chessBoard.getComponent(56+i-j*8);
+                    JPanel panel = (JPanel) chessBoard.getComponent(56 + i - j * 8);
+                    panel.removeAll();
                     panel.add(piece);
 
+                } else {
+                    ((JPanel) chessBoard.getComponent(56 + i - j * 8)).removeAll();
                 }
             }
         }
         this.setVisible(true);
         this.repaint();
+
+    }
+
+    public void setDeplacementAutorises(List<Point> tab) {
+        for (Point p : tab) {
+            JPanel panel = (JPanel) chessBoard.getComponent(56 + p.x - p.y * 8);
+            panel.setBackground(Color.green);      
+        }
+        this.setVisible(true);
+        this.repaint();
+    }
+
+    public Point getCoord(Point p) {
+
+        Point coord = new Point();
+
+        coord.x = p.x / 100;
+        coord.y = (800 - p.y) / 100;
+
+        return coord;
+
+    }
+
+    public JLabel getChessPiece() {
+        return chessPiece;
+    }
+
+    public void setChessPiece(JLabel chessPiece) {
+        this.chessPiece = chessPiece;
+    }
+
+    public JPanel getChessBoard() {
+        return chessBoard;
+    }
+
+    public int getxAdjustment() {
+        return xAdjustment;
+    }
+
+    public void setxAdjustment(int xAdjustment) {
+        this.xAdjustment = xAdjustment;
+    }
+
+    public int getyAdjustment() {
+        return yAdjustment;
+    }
+
+    public void setyAdjustment(int yAdjustment) {
+        this.yAdjustment = yAdjustment;
+    }
+
+    public JLayeredPane getLayeredPane() {
+        return this.layeredPane;
+    }
+
+    public void setLayeredPane(JLayeredPane l) {
+        this.layeredPane = l;
+    }
+
+    public void restoreBackGround() {
+
+        for (int i = 0; i < 64; i++) {
+            JPanel panel = (JPanel) chessBoard.getComponent(i);
+            int row = (i / 8) % 2;
+            if (row == 0) {
+                panel.setBackground(i % 2 == 0 ? Color.black : Color.white);
+            } else {
+                panel.setBackground(i % 2 == 0 ? Color.white : Color.black);
+            }
+        }
 
     }
 }

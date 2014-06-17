@@ -15,6 +15,12 @@ public class Pion extends Piece {
 
     }
 
+    public void unsetPremierDeplacement() {
+        this.premierDeplacement = false;
+    }
+    
+    
+
     public boolean testDeplacement(Point p) {
         boolean estDeplacable = true;
 
@@ -47,11 +53,11 @@ public class Pion extends Piece {
         
         if (this.couleur == Couleur.noir)
         {
-            if (this.point.y - p.y == -1 && Math.abs(this.point.x - p.x) == 1)
+            if (this.point.y - p.y == 1 && Math.abs(this.point.x - p.x) == 1)
                 estDeplacable = true;
         }
         else {
-            if (this.point.y - p.y == 1 && Math.abs(this.point.x - p.x) == 1)
+            if (this.point.y - p.y == -1 && Math.abs(this.point.x - p.x) == 1)
                 estDeplacable = true;
         }
         
