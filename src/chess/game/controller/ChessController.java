@@ -60,7 +60,7 @@ public class ChessController implements MouseListener {
     @Override
     public void mousePressed(MouseEvent me) {
 
-        if (((ChessFrame) this.fenetre).getChessBoard().contains(me.getPoint())) {
+        if (me.getPoint().x < 800 && me.getPoint().y < 800) {
             if (this.echiquier.getPieceCase(((ChessFrame) this.fenetre).getCoord(me.getPoint())).getCouleur() == this.echiquier.getJoueurCourant().getCouleurJeu()) {
                 pInit = ((ChessFrame) this.fenetre).getCoord(me.getPoint());
                 deplacementsAutorises(pInit);
@@ -71,24 +71,24 @@ public class ChessController implements MouseListener {
 
     @Override
     public void mouseReleased(MouseEvent me) {
-        if (((ChessFrame) this.fenetre).getChessBoard().contains(me.getPoint())) {
-            Piece p = echiquier.getPieceCase(this.pInit);
-            if (p != null) {
+        Piece p = echiquier.getPieceCase(this.pInit);
+        if (p != null) {
+            if (me.getPoint().x < 800 && me.getPoint().y < 800) {
                 if (this.echiquier.deplacerPiece(p, ((ChessFrame) this.fenetre).getCoord(me.getPoint()))) {
                     ((ChessFrame) this.fenetre).changeDisplayJoueur();
                 }
-
             }
-
-            if (((ChessFrame) this.fenetre).getChessPiece() != null) {
-
-                  ((ChessFrame)this.fenetre).dropIcon(me.getPoint());
-            }
-
-            ((ChessFrame) this.fenetre).afficherEchiquier(this.echiquier.getVue());
-            ((ChessFrame) this.fenetre).restoreBackGround();
 
         }
+
+        if (((ChessFrame) this.fenetre).getChessPiece() != null) {
+
+            ((ChessFrame) this.fenetre).dropIcon(me.getPoint());
+        }
+
+        ((ChessFrame) this.fenetre).afficherEchiquier(this.echiquier.getVue());
+        ((ChessFrame) this.fenetre).restoreBackGround();
+
     }
 
     @Override
@@ -111,7 +111,7 @@ public class ChessController implements MouseListener {
         ((ChessFrame) this.fenetre).afficherEchiquier(this.echiquier.getVue());
     }
 
-    public void save(String s, int timerTour, int timerSeconde ) {
+    public void save(String s, int timerTour, int timerSeconde) {
         try {
             ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(s));
             Partie p = new Partie(this.echiquier, timerSeconde, timerTour);
@@ -120,16 +120,16 @@ public class ChessController implements MouseListener {
             System.out.println(ex);
         }
     }
-    
-    public void load(File selectedFile) {
-        try{
 
-            ObjectInputStream ois =  new ObjectInputStream(new FileInputStream(selectedFile)) ;
-            Partie p  = (Partie)ois.readObject() ;
+    public void load(File selectedFile) {
+        try {
+
+            ObjectInputStream ois = new ObjectInputStream(new FileInputStream(selectedFile));
+            Partie p = (Partie) ois.readObject();
             this.echiquier = p.getE();
-            ((ChessFrame)this.fenetre).afficherEchiquier(this.echiquier.getVue());
-            ((ChessFrame)this.fenetre).loadPartie(p.getTimerSeconde(), p.getTimerTour(), p.getE().getJoueurCourant().getCouleurJeu());
-            
+            ((ChessFrame) this.fenetre).afficherEchiquier(this.echiquier.getVue());
+            ((ChessFrame) this.fenetre).loadPartie(p.getTimerSeconde(), p.getTimerTour(), p.getE().getJoueurCourant().getCouleurJeu());
+
         } catch (Exception ex) {
             System.out.println(ex);
         }

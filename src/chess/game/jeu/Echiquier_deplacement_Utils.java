@@ -27,6 +27,9 @@ public class Echiquier_deplacement_Utils {
             estDeplacable = false;
         }
         
+        if (e.isRoque(p, point))
+            estDeplacable = true;
+
         //test pièce déjà présente sur la case
         if (estDeplacable && e.getPieceCase(point) != null) {
             if (p.getType() == Piece_type.pion && p.point.x - point.x == 0) {
@@ -35,10 +38,10 @@ public class Echiquier_deplacement_Utils {
             if (e.getPieceCase(point).getCouleur() == p.getCouleur()) {
                 estDeplacable = false;
             }
-        }
-        else if (estDeplacable && e.getPieceCase(point) == null){
-            if (p.getType() == Piece_type.pion && Math.abs(p.getPoint().x - point.x) != 0)
+        } else if (estDeplacable && e.getPieceCase(point) == null) {
+            if (p.getType() == Piece_type.pion && Math.abs(p.getPoint().x - point.x) != 0) {
                 estDeplacable = false;
+            }
         }
 
         //test de collision (sauf pour cavalier)

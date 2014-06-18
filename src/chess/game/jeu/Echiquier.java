@@ -46,7 +46,7 @@ public class Echiquier implements Serializable {
     public boolean deplacerPiece(Piece p, Point point) {
 
         boolean succes = false;
-        
+
         if (Echiquier_deplacement_Utils.estAutorise(p, this, point)) {
             if (this.getPieceCase(point) != null) {
                 if (this.jeuCourant == this.j1) {
@@ -55,9 +55,16 @@ public class Echiquier implements Serializable {
                     this.j1.mangerPieceCase(point);
                 }
             }
-            this.tabPieces[p.point.x][p.point.y] = null;
-            p.setPoint(point);
-            this.tabPieces[p.point.x][p.point.y] = p;
+            if (isRoque(p, point)) {
+                this.roque(p, point);
+            } else {
+                this.tabPieces[p.point.x][p.point.y] = null;
+                p.setPoint(point);
+                this.tabPieces[p.point.x][p.point.y] = p;
+                p.unsetPremierDeplacement();
+            }
+
+
             succes = true;
             if (p.getType() == Piece_type.pion) {
                 ((Pion) p).unsetPremierDeplacement();
@@ -105,5 +112,83 @@ public class Echiquier implements Serializable {
         }
         return tab;
 
+    }
+
+    public void deplacementPetitRoque(Piece p)
+    {
+            int px = p.getPoint().x;
+            Piece tour = getPieceCase(new Point(px + 3, p.getPoint().y));
+            p.setPoint(new Point(px + 2, p.getPoint().y));
+            this.tabPieces[px + 2][p.getPoint().y] = p;
+            tour.setPoint(new Point(px + 1, p.getPoint().y));
+            this.tabPieces[px + 1][p.getPoint().y] = tour;
+            this.tabPieces[px][p.getPoint().y] = null;
+            this.tabPieces[px + 3][p.getPoint().y] = null;
+            p.unsetPremierDeplacement();
+            tour.unsetPremierDeplacement();
+        
+    }
+        public void deplacementGrandRoque(Piece p)
+    {
+            int px = p.getPoint().x;
+            Piece tour = getPieceCase(new Point(px - 4, p.getPoint().y));
+            p.setPoint(new Point(px - 2, p.getPoint().y));
+            this.tabPieces[px - 2][p.getPoint().y] = p;
+            tour.setPoint(new Point(px - 1, p.getPoint().y));
+            this.tabPieces[px - 1][p.getPoint().y] = tour;
+            this.tabPieces[px][p.getPoint().y] = null;
+            this.tabPieces[px - 4][p.getPoint().y] = null;
+            p.unsetPremierDeplacement();
+            tour.unsetPremierDeplacement();
+        
+    }
+    public void roque(Piece p, Point point) {
+
+        if (point.equals(new Point(6, 0)) || point.equals(new Point(6, 7))) {
+            deplacementPetitRoque(p);
+        }
+        if (point.equals(new Point(2, 0)) || point.equals(new Point(2, 7))) {
+            deplacementGrandRoque(p);
+        }
+
+    }
+
+    public boolean isRoque(Piece p, Point point) {
+        boolean succes = false;
+        if (p.getType() == Piece_type.roi && p.isPremierDeplacement()) {
+            if (p.getCouleur() == Couleur.blanc) {
+                if (point.equals(new Point(6, 0))) {
+                    if (getPieceCase(new Point(7, 0)).getType() == Piece_type.tour && getPieceCase(new Point(7, 0)).isPremierDeplacement()) {
+                        if (getPieceCase(new Point(6, 0)) == null && getPieceCase(new Point(5, 0)) == null) {
+                            succes = true;
+                        }
+                    }
+                }
+                if (point.equals(new Point(2, 0))) {
+                    if (getPieceCase(new Point(0, 0)).getType() == Piece_type.tour && getPieceCase(new Point(0, 0)).isPremierDeplacement()) {
+                        if (getPieceCase(new Point(1, 0)) == null && getPieceCase(new Point(2, 0)) == null && getPieceCase(new Point(3, 0)) == null) {
+                            succes = true;
+                        }
+                    }
+                }
+            }
+            if (p.getCouleur() == Couleur.noir) {
+                if (point.equals(new Point(6, 7))) {
+                    if (getPieceCase(new Point(7, 7)).getType() == Piece_type.tour && getPieceCase(new Point(7, 7)).isPremierDeplacement()) {
+                        if (getPieceCase(new Point(6, 7)) == null && getPieceCase(new Point(5, 7)) == null) {
+                            succes = true;
+                        }
+                    }
+                }
+                if (point.equals(new Point(2, 7))) {
+                    if (getPieceCase(new Point(0, 7)).getType() == Piece_type.tour && getPieceCase(new Point(0, 7)).isPremierDeplacement()) {
+                        if (getPieceCase(new Point(1, 7)) == null && getPieceCase(new Point(2, 7)) == null && getPieceCase(new Point(3, 7)) == null) {
+                            succes = true;
+                        }
+                    }
+                }
+            }
+        }
+        return succes;
     }
 }

@@ -14,6 +14,7 @@ abstract public class Piece implements Serializable {
   protected Couleur couleur;
   protected Piece_type type;
   protected boolean vivant;
+  protected boolean premierDeplacement = true;
   
 
   public Piece (Point p, Couleur c) { 
@@ -62,6 +63,14 @@ abstract public class Piece implements Serializable {
   }
 
   abstract public boolean testDeplacement( Point p );
+
+    public boolean isPremierDeplacement() {
+        return premierDeplacement;
+    }
+
+    public void unsetPremierDeplacement() {
+        this.premierDeplacement = false;
+    }
 
 
 }

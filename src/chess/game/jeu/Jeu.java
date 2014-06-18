@@ -118,6 +118,5 @@ public class Jeu implements Serializable{
         return tabPieces.toString();
                 
   }
-
-
+        
 }

@@ -6,20 +6,12 @@ import java.util.List;
 
 public class Pion extends Piece {
 
-    private boolean premierDeplacement = true;
-
     public Pion(Point p, Couleur c) {
 
         super(p, c);
         this.type = Piece_type.pion;
 
     }
-
-    public void unsetPremierDeplacement() {
-        this.premierDeplacement = false;
-    }
-    
-    
 
     public boolean testDeplacement(Point p) {
         boolean estDeplacable = true;

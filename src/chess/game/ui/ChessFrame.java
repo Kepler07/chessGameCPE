@@ -69,6 +69,7 @@ public class ChessFrame extends JFrame implements MouseMotionListener {
                 FileNameExtensionFilter filter = new FileNameExtensionFilter(
                         "Chess Saves", "chs");
                 chooser.setFileFilter(filter);
+                chooser.setApproveButtonText("Enregistrer");
                 int returnVal = chooser.showOpenDialog(chooser);
                 if (returnVal == JFileChooser.APPROVE_OPTION) {
                     if (chooser.getSelectedFile().toString().contains(".chs")) {
@@ -100,7 +101,7 @@ public class ChessFrame extends JFrame implements MouseMotionListener {
 
             @Override
             public void actionPerformed(ActionEvent ae) {
-                System.exit(1);
+                System.exit(0);
             }
         });
         file.add(save);
@@ -416,7 +417,7 @@ public class ChessFrame extends JFrame implements MouseMotionListener {
     }
 
     public void dropIcon(Point point) {
-        
+
         this.chessPiece.setVisible(false);
         Component c = this.chessBoard.findComponentAt(point.x, point.y);
 
@@ -424,6 +425,7 @@ public class ChessFrame extends JFrame implements MouseMotionListener {
             Container parent = c.getParent();
             parent.remove(0);
             parent.add(this.chessPiece);
+        } else if (c == null)  {          
         } else {
             Container parent = (Container) c;
             parent.add(this.chessPiece);
