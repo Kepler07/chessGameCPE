@@ -261,8 +261,8 @@ public class ChessFrame extends JFrame implements MouseMotionListener {
 
         Point coord = new Point();
 
-        coord.x = p.x / 100;
-        coord.y = (800 - p.y) / 100;
+        coord.x = p.x / (sizex / 8) ;
+        coord.y = (sizey - p.y) / (sizey / 8);
 
         return coord;
 

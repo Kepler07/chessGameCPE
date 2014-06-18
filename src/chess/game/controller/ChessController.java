@@ -5,17 +5,13 @@
 package chess.game.controller;
 
 import chess.game.jeu.Echiquier;
-import chess.game.jeu.Piece;
 import chess.game.ui.ChessFrame;
-import java.awt.Component;
-import java.awt.Container;
 import java.awt.Point;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -24,9 +20,8 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JLayeredPane;
-import javax.swing.JPanel;
+import javax.swing.UIManager;
+import javax.swing.UnsupportedLookAndFeelException;
 
 public class ChessController implements MouseListener {
 
@@ -36,6 +31,19 @@ public class ChessController implements MouseListener {
 
     public ChessController() {
 
+        try {
+            // Set cross-platform Java L&F (also called "Metal")
+            UIManager.setLookAndFeel("com.sun.java.swing.plaf.nimbus.NimbusLookAndFeel");
+        } catch (UnsupportedLookAndFeelException e) {
+            // handle exception
+        } catch (ClassNotFoundException e) {
+            // handle exception
+        } catch (InstantiationException e) {
+            // handle exception
+        } catch (IllegalAccessException e) {
+            // handle exception
+        }
+
         this.echiquier = new Echiquier();
         this.fenetre = new ChessFrame(this);
 
@@ -43,7 +51,6 @@ public class ChessController implements MouseListener {
 
 
         this.fenetre.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-
         this.fenetre.pack();
         this.fenetre.setResizable(true);
         this.fenetre.setLocationRelativeTo(null);
@@ -61,20 +68,21 @@ public class ChessController implements MouseListener {
     public void mousePressed(MouseEvent me) {
 
         if (me.getPoint().x < 800 && me.getPoint().y < 800) {
-            if (this.echiquier.getPieceCase(((ChessFrame) this.fenetre).getCoord(me.getPoint())).getCouleur() == this.echiquier.getJoueurCourant().getCouleurJeu()) {
-                pInit = ((ChessFrame) this.fenetre).getCoord(me.getPoint());
-                deplacementsAutorises(pInit);
-                ((ChessFrame) this.fenetre).moveIcon(me.getPoint());
+            if (this.echiquier.getPieceCase(((ChessFrame) this.fenetre).getCoord(me.getPoint())) != null) {
+                if (this.echiquier.getPieceCase(((ChessFrame) this.fenetre).getCoord(me.getPoint())).getCouleur() == this.echiquier.getJoueurCourant().getCouleurJeu()) {
+                    pInit = ((ChessFrame) this.fenetre).getCoord(me.getPoint());
+                    deplacementsAutorises(pInit);
+                    ((ChessFrame) this.fenetre).moveIcon(me.getPoint());
+                }
             }
         }
     }
 
     @Override
     public void mouseReleased(MouseEvent me) {
-        Piece p = echiquier.getPieceCase(this.pInit);
-        if (p != null) {
+        if (echiquier.getPieceCase(this.pInit) != null) {
             if (me.getPoint().x < 800 && me.getPoint().y < 800) {
-                if (this.echiquier.deplacerPiece(p, ((ChessFrame) this.fenetre).getCoord(me.getPoint()))) {
+                if (this.echiquier.deplacerPiece(echiquier.getPieceCase(this.pInit), ((ChessFrame) this.fenetre).getCoord(me.getPoint()))) {
                     ((ChessFrame) this.fenetre).changeDisplayJoueur();
                 }
             }
