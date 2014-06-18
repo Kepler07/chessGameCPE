@@ -1,13 +1,14 @@
 package chess.game.jeu;
 
 import java.awt.Point;
+import java.io.Serializable;
 
 
 
 /**
  * Class Piece
  */
-abstract public class Piece {
+abstract public class Piece implements Serializable {
 
   protected Point point;
   protected Couleur couleur;

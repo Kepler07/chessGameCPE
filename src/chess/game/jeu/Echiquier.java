@@ -2,10 +2,11 @@ package chess.game.jeu;
 
 import chess.game.controller.VuePiece;
 import java.awt.Point;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Echiquier {
+public class Echiquier implements Serializable {
 
     private Jeu j1;
     private Jeu j2;
@@ -42,8 +43,10 @@ public class Echiquier {
         }
     }
 
-    public void deplacerPiece(Piece p, Point point) {
+    public boolean deplacerPiece(Piece p, Point point) {
 
+        boolean succes = false;
+        
         if (Echiquier_deplacement_Utils.estAutorise(p, this, point)) {
             if (this.getPieceCase(point) != null) {
                 if (this.jeuCourant == this.j1) {
@@ -55,12 +58,13 @@ public class Echiquier {
             this.tabPieces[p.point.x][p.point.y] = null;
             p.setPoint(point);
             this.tabPieces[p.point.x][p.point.y] = p;
+            succes = true;
             if (p.getType() == Piece_type.pion) {
                 ((Pion) p).unsetPremierDeplacement();
             }
             this.changerJoueur();
         }
-
+        return succes;
     }
 
     public Piece getPieceCase(Point p) {

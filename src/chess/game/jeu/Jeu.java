@@ -1,11 +1,12 @@
 package chess.game.jeu;
 
 import java.awt.Point;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
 
-public class Jeu {
+public class Jeu implements Serializable{
 
   private List<Piece> tabPieces;
   private Couleur couleurJeu;
